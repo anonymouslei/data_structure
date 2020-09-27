@@ -14,7 +14,6 @@ public:
     Polynomial()
     {
         head_ = new PolyNode;
-//        head_->coef = 0;
         head_->Next = NULL;
     }
 
@@ -28,6 +27,27 @@ public:
         cin >> num;
         PolynomialNode rear = head_;
         PolynomialNode t;
+
+        while (num--) {
+            cin >> coef >> expon;
+            Attach(coef, expon, rear);
+        }
+
+        t = head_;
+        head_ = head_->Next;
+        delete t;
+    }
+    void ReadPoly(int input[]) {
+        int num, coef, expon;
+        num = input[0];
+        PolynomialNode rear = head_;
+        PolynomialNode t;
+
+        for (int i = 1; i < num+1; ++i) {
+            coef = input[2*i - 1];
+            expon = input[2*i];
+            Attach(coef, expon, rear);
+        }
 
         t = head_;
         head_ = head_->Next;
@@ -44,11 +64,10 @@ public:
     }
 
     Polynomial operator*(const Polynomial & P2) {
-        //
         Polynomial P;
         PolynomialNode t1, t2, rear, t;
         int c, e;
-        if (!head_ || P2.head_)
+        if (!head_ || !P2.head_)
             return P;
 
         t1 = head_;
@@ -85,6 +104,7 @@ public:
                     rear->Next = t;
                     rear = rear->Next;
                 }
+                t2 = t2->Next;
             }
             t1 = t1->Next;
         }
@@ -120,7 +140,7 @@ public:
                 Attach(t2->coef, t2->expon, rear);
                 t2 = t2->Next;
 
-                }
+            }
         }
         while (t1) {
             Attach(t1->coef, t1->expon, rear);
@@ -133,13 +153,27 @@ public:
 
         }
         rear ->Next = NULL;
-        tmp = P.head_; // 这个可能无法访问
-        P.head_ = P.head_->Next;
-        delete tmp;
 
         return P;
     }
-    void PrintPoly();
+    void PrintPoly() {
+        int flag = 0;
+        PolynomialNode tmp = head_;
+
+        if (!tmp) {
+            cout << "0 0";
+            return;
+        }
+        while (tmp) {
+            if (!flag) flag = 1;
+            else {
+                cout << " ";
+                cout << tmp->coef << " " << tmp->expon;
+                tmp = tmp->Next;
+            }
+        }
+        cout << endl;
+    }
 
 private:
     PolynomialNode head_;
@@ -147,18 +181,12 @@ private:
 };
 
 int main() {
-//    int num_1, num_2;
-//    cin >> num_1;
-    Polynomial P1, P2, P3, P4;
+    Polynomial P1, P2;
     P1.ReadPoly();
     P2.ReadPoly();
-    P3 = P1 + P2;
-    P4 = P1 * P2;
-
-
-
-
-//    for (auto i = 0; i < num_1; i++) {
-//    }
+    Polynomial P3 = P1 + P2;
+    Polynomial P4 = P1 * P2;
+    P4.PrintPoly();
+    P3.PrintPoly();
     return 0;
 }
