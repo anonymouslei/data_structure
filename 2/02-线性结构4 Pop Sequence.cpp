@@ -1,6 +1,14 @@
 /*
  * 这道题毫无思路，参考网上思路
  *
+ * 思路： 1. 把第一个数字压入stack
+          2. 循环（capacity of stack && pop sequence中的所有元素都比较完了）
+				若一致： stack pop, 
+						pop sequence + 1
+				若不一致：
+						按顺序压入下一个进入stack
+		 3.若Pop sequence所有元素都比较了 =》YES
+			否则：NO
  */
  #include <iostream>
 #include <vector>
@@ -50,8 +58,6 @@ void PopSequence::judgment() {
 
         while (num < lengthOfSeq_ && stackSeq.size() != maxCapacity_+1)
         {
-            // std::cout << stackSeq.empty();
-            // std::cout << (stackSeq.top() == sequence[num]);
             if (!stackSeq.empty() && (stackSeq.top() == sequence[num]))
             {
                 stackSeq.pop();
